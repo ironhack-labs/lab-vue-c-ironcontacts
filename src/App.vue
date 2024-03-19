@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Contacts from "./contacts.json"
 
 const contacts = ref(Contacts);
@@ -10,32 +10,39 @@ function fiveContacts(contactsJson) {
 
 fiveContacts(Contacts);
 
+watch(contacts, () => {
+  fiveContacts(Contacts);
+});
+
 </script>
 
 <template>
-  <!-- <ul class="contacts-container" v-for="(contact, index) in contacts" :key="index">
-    <li>{{ contact.name }}</li>
-  </ul> -->
-
   <table>
     <thead>
       <tr>
         <th>Picture</th>
         <th>Name</th>
         <th>Popularity</th>
+        <th>Won Oscar</th>
+        <th>Won Emmy</th>
       </tr>
     </thead>
     <tbody id="contactList">
-      <!-- Table rows will be dynamically generated here -->
       <tr v-for="(contact, index) in contacts" :key="index">
         <td>
-          <img :src="contact.pictureUrl" alt="" srcset="">
+          <img :src="contact.pictureUrl" :alt="`profile image of actor ${contact.name}`">
         </td>
         <td>
           <p>{{ contact.name }}</p>
         </td>
         <td>
           <p>{{ contact.popularity.toFixed(2) }}</p>
+        </td>
+        <td>
+          <p>{{ contact.wonOscar ? '🏆' : '' }}</p>
+        </td>
+        <td>
+          <p>{{ contact.wonEmmy ? '🏆' : '' }}</p>
         </td>
       </tr>
     </tbody>
