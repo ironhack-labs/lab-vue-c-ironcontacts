@@ -19,14 +19,7 @@
       </thead>
       <tbody>
         <tr v-for="contact in contacts" :key="contact.id">
-          <td><img :src="contact.pictureUrl" alt="contact picture"></td>
-          <td>{{ contact.name }}</td>
-          <td>{{ contact.popularity.toFixed(2) }}</td>
-          <td v-if="contact.wonOscar"> 🏆</td>
-          <td v-else></td>
-          <td v-if="contact.wonEmmy">🏆</td>
-          <td v-else></td>
-          <td><button @click="deleteContact(contact.id)">Delete</button></td>
+          <contact-item :contact="contact" @delete="deleteContact(contact.id)" />
         </tr>
       </tbody>
     </table>
@@ -34,25 +27,31 @@
 </template>
 
 <script>
-import contacts from "./contacts.json";
+import contacts from './contacts.json';
+import ContactItem from './components/tableContacts.vue';
+
 export default {
-  name: "App",
+  name: 'App',
+  components: {
+    ContactItem
+  },
   data() {
     return {
-      title: "IronContacts",
+      title: 'IronContacts',
       contacts: [],
       remainingContacts: [],
-      sortOrder: "desc",
+      sortOrder: 'desc',
+      sortByField: ''
     };
   },
   mounted() {
     this.contacts = contacts.slice(0, 5);
-    this.remainingContacts = contacts.slice(5)
+    this.remainingContacts = contacts.slice(5);
   },
   methods: {
     addRandomContact() {
       if (this.remainingContacts.length === 0) {
-        alert("No hay más contactos disponibles.");
+        alert('No hay más contactos disponibles.');
         return;
       }
       const randomIndex = Math.floor(Math.random() * this.remainingContacts.length);
@@ -60,30 +59,30 @@ export default {
       this.contacts.push(newContact);
     },
     sortByPopularity() {
-      if (this.sortOrder === "asc") {
+      if (this.sortOrder === 'asc') {
         this.contacts.sort((a, b) => a.popularity - b.popularity);
-        this.sortOrder = "desc";
+        this.sortOrder = 'desc';
       } else {
         this.contacts.sort((a, b) => b.popularity - a.popularity);
-        this.sortOrder = "asc";
+        this.sortOrder = 'asc';
       }
     },
     sortByName() {
-      if (this.sortOrder === "asc") {
+      if (this.sortOrder === 'asc') {
         this.contacts.sort((a, b) => a.name.localeCompare(b.name));
-        this.sortOrder = "desc";
+        this.sortOrder = 'desc';
       } else {
         this.contacts.sort((a, b) => b.name.localeCompare(a.name));
-        this.sortOrder = "asc";
+        this.sortOrder = 'asc';
       }
     },
     deleteContact(id) {
-      const index = this.contacts.findIndex((contact) => contact.id === id);
+      const index = this.contacts.findIndex(contact => contact.id === id);
       if (index !== -1) {
         this.contacts.splice(index, 1);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
