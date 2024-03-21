@@ -14,6 +14,7 @@
           <th>Popularity</th>
           <th>Won an Oscar</th>
           <th>Won an Emmy</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +26,7 @@
           <td v-else></td>
           <td v-if="contact.wonEmmy">🏆</td>
           <td v-else></td>
+          <td><button @click="deleteContact(contact.id)">Delete</button></td>
         </tr>
       </tbody>
     </table>
@@ -73,6 +75,12 @@ export default {
       } else {
         this.contacts.sort((a, b) => b.name.localeCompare(a.name));
         this.sortOrder = "asc";
+      }
+    },
+    deleteContact(id) {
+      const index = this.contacts.findIndex((contact) => contact.id === id);
+      if (index !== -1) {
+        this.contacts.splice(index, 1);
       }
     },
   },
