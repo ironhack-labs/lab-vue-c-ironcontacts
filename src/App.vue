@@ -1,12 +1,15 @@
 <template>
   <div>
     <h1>{{title}}</h1>
+
     <table>
       <thead>
         <tr>
           <th>Picture</th>
           <th>Name</th>
           <th>Popularity</th>
+          <th>Won an Oscar</th>
+          <th>Won an Emmy</th>
         </tr>
       </thead>
       <tbody>
@@ -14,6 +17,10 @@
           <td><img :src="contact.pictureUrl" alt="contact picture"></td>
           <td>{{ contact.name }}</td>
           <td>{{ contact.popularity.toFixed(2) }}</td>
+          <td v-if="contact.wonOscar"> 🏆</td>
+          <td v-else></td>
+          <td v-if="contact.wonEmmy">🏆</td>
+          <td v-else></td>
         </tr>
       </tbody>
     </table>
@@ -36,8 +43,7 @@
       this.contacts = contacts.slice(0, 5);
       this.remainingContacts = contacts.slice(5)
     },
-    methods: {
-    }, 
+    methods: {}, 
   };
 </script>
 
