@@ -3,6 +3,8 @@
     <h1>{{ title }}</h1>
     <div class="button-container">
       <button @click="addRandomContact">Add Random Contact</button>
+      <button @click="sortByPopularity">Sort By Popularity</button>
+      <button @click="sortByName">Sort By Name</button>
     </div>
     <table>
       <thead>
@@ -54,6 +56,24 @@ export default {
       const randomIndex = Math.floor(Math.random() * this.remainingContacts.length);
       const newContact = this.remainingContacts.splice(randomIndex, 1)[0];
       this.contacts.push(newContact);
+    },
+    sortByPopularity() {
+      if (this.sortOrder === "asc") {
+        this.contacts.sort((a, b) => a.popularity - b.popularity);
+        this.sortOrder = "desc";
+      } else {
+        this.contacts.sort((a, b) => b.popularity - a.popularity);
+        this.sortOrder = "asc";
+      }
+    },
+    sortByName() {
+      if (this.sortOrder === "asc") {
+        this.contacts.sort((a, b) => a.name.localeCompare(b.name));
+        this.sortOrder = "desc";
+      } else {
+        this.contacts.sort((a, b) => b.name.localeCompare(a.name));
+        this.sortOrder = "asc";
+      }
     },
   },
 };
