@@ -12,12 +12,24 @@ function addRandomContact() {
   }
 }
 
+function sortByPopularity() {
+  displayContacts.value.sort((a, b) => b.popularity - a.popularity);
+}
+
+function sortByName() {
+  displayContacts.value.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function deleteContact(index) {
+  displayContacts.value.splice(index, 1);
+}
+
 </script>
 
 <template>
   <div id="app">
     <h1>IronContacts</h1>
-    <div id="buttons"><button @click="addRandomContact">Add contact</button></div>
+    <div id="buttons"><button @click="addRandomContact">Add contact</button><button @click="sortByPopularity">Sort by popularity</button><button @click="sortByName">Sort by name</button></div>
     <table>
       <tr>
         <th>Picture</th>
@@ -34,6 +46,7 @@ function addRandomContact() {
         <td v-if="!person.wonOscar"></td>
         <td v-if="person.wonEmmy">🏆</td>
         <td v-if="!person.wonEmmy"></td>
+        <td><button @click="deleteContact(index)">Delete</button></td>
       </tr>
     </table>
   </div>
