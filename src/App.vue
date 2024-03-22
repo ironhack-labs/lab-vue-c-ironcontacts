@@ -1,31 +1,45 @@
 <script setup>
 import { ref, computed } from "vue";
-import contacts from "@/contacts.json";
+// import contacts from "@/contacts.json";
+import { useContactsStore } from "@/stores/contactsStore";
+import { storeToRefs } from "pinia";
 
-const displayContacts = ref(contacts.slice(0, 5)); 
-const remainingContacts = computed(() => contacts.filter(contact => !displayContacts.value.some(fc => fc.id === contact.id)));
+const contactsStore = useContactsStore();
 
-function addRandomContact() {
-  if (remainingContacts.value.length > 0) {
-    const randomIndex = Math.floor(Math.random() * remainingContacts.value.length);
-    displayContacts.value.push(remainingContacts.value[randomIndex]);
-  }
-}
+// Destructuring to avoid having to call contactsStore.function every time
 
-function sortByPopularity() {
-  displayContacts.value.sort((a, b) => b.popularity - a.popularity);
-}
+// const { displayContacts } = storeToRefs(contactsStore);
+// const { addRandomContact, sortByPopularity, sortByName, deleteContact } = contactsStore;
 
-function sortByName() {
-  displayContacts.value.sort((a, b) => a.name.localeCompare(b.name));
-}
+const { addRandomContact, sortByPopularity, sortByName, deleteContact } = contactsStore
+const { originalContacts, remainingContacts, displayContacts } = storeToRefs(contactsStore);
 
-function deleteContact(contactId) {
-  const indexToRemove = displayContacts.value.findIndex(contact => contact.id === contactId);
-  if (indexToRemove !== -1) {
-    displayContacts.value.splice(indexToRemove, 1);
-  }
-}
+// const { displayContacts, addRandomContact, sortByPopularity, sortByName, deleteContact } = contactsStore;
+
+// const displayContacts = ref(contacts.slice(0, 5)); 
+// const remainingContacts = computed(() => contacts.filter(contact => !displayContacts.value.some(fc => fc.id === contact.id)));
+
+// function addRandomContact() {
+//   if (remainingContacts.value.length > 0) {
+//     const randomIndex = Math.floor(Math.random() * remainingContacts.value.length);
+//     displayContacts.value.push(remainingContacts.value[randomIndex]);
+//   }
+// }
+
+// function sortByPopularity() {
+//   displayContacts.value.sort((a, b) => b.popularity - a.popularity);
+// }
+
+// function sortByName() {
+//   displayContacts.value.sort((a, b) => a.name.localeCompare(b.name));
+// }
+
+// function deleteContact(contactId) {
+//   const indexToRemove = displayContacts.value.findIndex(contact => contact.id === contactId);
+//   if (indexToRemove !== -1) {
+//     displayContacts.value.splice(indexToRemove, 1);
+//   }
+// }
 
 </script>
 
@@ -33,9 +47,9 @@ function deleteContact(contactId) {
   <div id="app">
     <h1>IronContacts</h1>
     <div id="buttons">
-      <button class="button" @click="addRandomContact">Add contact</button>
-      <button class="button" @click="sortByPopularity">Sort by popularity</button>
-      <button class="button" @click="sortByName">Sort by name</button>
+      <button class="button" @click="contactsStore.addRandomContact">Add contact</button>
+      <button class="button" @click="contactsStore.sortByPopularity">Sort by popularity</button>
+      <button class="button" @click="contactsStore.sortByName">Sort by name</button>
     </div>
     <table>
       <tr>
