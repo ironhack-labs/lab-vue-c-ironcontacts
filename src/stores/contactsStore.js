@@ -8,9 +8,9 @@ export const useContactsStore = defineStore("contactsID", () => {
 
   function getRandomContact() {
     const unusedContacts = contacts.value.filter(
-      (country) =>
+      (contact) =>
         !displayContactsArray.value.find(
-          (countryTwo) => countryTwo.id === country.id
+          (contactTwo) => contactTwo.id === contact.id
         )
     );
     return unusedContacts[Math.floor(Math.random() * unusedContacts.length)];
@@ -39,6 +39,10 @@ export const useContactsStore = defineStore("contactsID", () => {
     });
   }
 
+  function deleteContact(id) {
+    displayContactsArray.value = displayContactsArray.value.filter((contact) => contact.id !== id);
+  }
+
   watch(contacts, () => {
     displayContactsArray.value = contacts.value.slice(0, 5);
   });
@@ -49,5 +53,6 @@ export const useContactsStore = defineStore("contactsID", () => {
     addRandomContact,
     sortByPopularity,
     sortByName,
+    deleteContact
   };
 });

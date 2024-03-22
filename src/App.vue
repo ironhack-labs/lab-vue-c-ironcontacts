@@ -5,16 +5,16 @@ import { storeToRefs } from "pinia";
 const contactsStore = useContactsStore();
 
 const { contacts, displayContactsArray } = storeToRefs(contactsStore);
-const { addRandomContact, sortByPopularity, sortByName } = contactsStore;
+const { addRandomContact, sortByPopularity, sortByName, deleteContact } = contactsStore;
 
 console.log(displayContactsArray.value);
 
 </script>
 
 <template>
-  <button class="add-contact-button" @click="addRandomContact">Add Random Contact</button>
-  <button class="add-contact-button" @click="sortByPopularity">Sort by Popularity</button>
-  <button class="add-contact-button" @click="sortByName">Sort by Name</button>
+  <button class="header-button" @click="addRandomContact">Add Random Contact</button>
+  <button class="header-button" @click="sortByPopularity">Sort by Popularity</button>
+  <button class="header-button" @click="sortByName">Sort by Name</button>
   <table>
     <thead>
       <tr>
@@ -23,10 +23,11 @@ console.log(displayContactsArray.value);
         <th>Popularity</th>
         <th>Won Oscar</th>
         <th>Won Emmy</th>
+        <th></th>
       </tr>
     </thead>
     <tbody id="contactList">
-      <tr v-for="(contact, index) in displayContactsArray" :key="index">
+      <tr v-for="(contact) in displayContactsArray" :key="contact.id">
         <td>
           <img :src="contact.pictureUrl" :alt="`profile image of actor ${contact.name}`">
         </td>
@@ -41,6 +42,9 @@ console.log(displayContactsArray.value);
         </td>
         <td>
           <p>{{ contact.wonEmmy ? '🏆' : '' }}</p>
+        </td>
+        <td>
+          <button class="delete-btn" @click="deleteContact(contact.id)">Delete</button>
         </td>
       </tr>
     </tbody>
@@ -69,7 +73,7 @@ img {
   max-height: 100px;
 }
 
-.add-contact-button {
+.header-button {
   display: inline-block;
   padding: 10px 20px;
   margin: 25px 10px;
@@ -83,7 +87,26 @@ img {
   transition: background-color 0.3s;
 }
 
-.add-contact-button:hover {
+.header-button:hover {
   background-color: #45a049;
 }
+
+.delete-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 25px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
 </style>
