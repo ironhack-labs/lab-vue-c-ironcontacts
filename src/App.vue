@@ -46,7 +46,7 @@ function deleteContact(contactId) {
         <th>Won Emmy</th>
         <th>Actions</th>
       </tr>
-      <tr v-for="person in displayContacts" :key="person.id" class="table-row" @mouseover="toggleHover(person.id)" @mouseleave="toggleHover(null)">
+      <tr v-for="person in displayContacts" :key="person.id" class="table-row">
         <td><img :src="person.pictureUrl" class="person-picture" /></td>
         <td>{{ person.name }}</td>
         <td>{{ person.popularity.toFixed(2) }}</td>
