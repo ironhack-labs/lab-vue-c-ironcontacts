@@ -20,8 +20,11 @@ function sortByName() {
   displayContacts.value.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function deleteContact(index) {
-  displayContacts.value.splice(index, 1);
+function deleteContact(contactId) {
+  const indexToRemove = displayContacts.value.findIndex(contact => contact.id === contactId);
+  if (indexToRemove !== -1) {
+    displayContacts.value.splice(indexToRemove, 1);
+  }
 }
 
 </script>
