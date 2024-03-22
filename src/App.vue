@@ -1,25 +1,39 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import contacts from "@/contacts.json";
 
-const fiveContacts = ref(contacts.slice(0, 5));
-const sortedContacts = ref(contacts.sort((a, b) => b.popularity - a.popularity));
-console.log(sortedContacts);
+const displayContacts = ref(contacts.slice(0, 5)); 
+const remainingContacts = computed(() => contacts.filter(contact => !displayContacts.value.some(fc => fc.id === contact.id)));
+
+function addRandomContact() {
+  if (remainingContacts.value.length > 0) {
+    const randomIndex = Math.floor(Math.random() * remainingContacts.value.length);
+    displayContacts.value.push(remainingContacts.value[randomIndex]);
+  }
+}
+
 </script>
 
 <template>
   <div id="app">
     <h1>IronContacts</h1>
+    <div id="buttons"><button @click="addRandomContact">Add contact</button></div>
     <table>
       <tr>
         <th>Picture</th>
         <th>Name</th>
         <th>Popularity</th>
+        <th>Won Oscar</th>
+        <th>Won Emmy</th>
       </tr>
-      <tr v-for="person in fiveContacts" :key="person.id">
-        <td><img :src="person.pictureUrl" class="person-picture"></td>
+      <tr v-for="person in displayContacts" :key="person.id">
+        <td class="name"><img :src="person.pictureUrl" class="person-picture"></td>
         <td>{{ person.name }}</td>
         <td>{{ person.popularity.toFixed(2) }}</td>
+        <td v-if="person.wonOscar">🏆</td>
+        <td v-if="!person.wonOscar"></td>
+        <td v-if="person.wonEmmy">🏆</td>
+        <td v-if="!person.wonEmmy"></td>
       </tr>
     </table>
   </div>
