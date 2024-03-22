@@ -7,13 +7,36 @@ export const useContactsStore = defineStore("contactsID", () => {
   const displayContactsArray = ref(contacts.value.slice(0, 5));
 
   function getRandomContact() {
-    const unusedContacts = contacts.value.filter(country => !displayContactsArray.value.find(countryTwo => countryTwo.id === country.id));
+    const unusedContacts = contacts.value.filter(
+      (country) =>
+        !displayContactsArray.value.find(
+          (countryTwo) => countryTwo.id === country.id
+        )
+    );
     return unusedContacts[Math.floor(Math.random() * unusedContacts.length)];
   }
 
   function addRandomContact() {
     const newContact = getRandomContact();
     displayContactsArray.value.push(newContact);
+  }
+
+  function sortByPopularity() {
+    displayContactsArray.value = displayContactsArray.value.sort((a, b) => b.popularity - a.popularity);
+  }
+
+  function sortByName() {
+    displayContactsArray.value = displayContactsArray.value.sort((a, b) => {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   watch(contacts, () => {
@@ -23,6 +46,8 @@ export const useContactsStore = defineStore("contactsID", () => {
   return {
     contacts,
     displayContactsArray,
-    addRandomContact
+    addRandomContact,
+    sortByPopularity,
+    sortByName,
   };
 });

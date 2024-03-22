@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 const contactsStore = useContactsStore();
 
 const { contacts, displayContactsArray } = storeToRefs(contactsStore);
-const { addRandomContact } = contactsStore;
+const { addRandomContact, sortByPopularity, sortByName } = contactsStore;
 
 console.log(displayContactsArray.value);
 
@@ -13,6 +13,8 @@ console.log(displayContactsArray.value);
 
 <template>
   <button class="add-contact-button" @click="addRandomContact">Add Random Contact</button>
+  <button class="add-contact-button" @click="sortByPopularity">Sort by Popularity</button>
+  <button class="add-contact-button" @click="sortByName">Sort by Name</button>
   <table>
     <thead>
       <tr>
