@@ -4,6 +4,8 @@
   </header>
   <section>
     <button @click="addNewRandomContact">Add Random Contact</button>
+    <button @click="sortByName">Sort By Name</button>
+    <button @click="sortByPopularity">Sort By Popularity</button>
   </section>
   <table>
     <thead>
@@ -28,11 +30,27 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  // IMPORTS
+  import { ref, computed } from 'vue';
   import allContacts from '@/contacts.json'
 
+  // VARIABLES
   const contactsToShow = ref(allContacts.slice(5, 10));
 
+  // COMPUTED VARIABLES
+
+  // Iteration 4: sort by name and popularity
+  const contactsByName = computed(() => {
+    return contactsToShow.value.sort((a,b) => a.name.localeCompare(b.name))
+  })
+
+  const contactsByPopularity = computed(() => {
+    return contactsToShow.value.sort((a,b) => b.popularity - a.popularity)
+  })
+
+  // FUNCTIONS
+
+  // Iteration 3: Add new random contacts
   const addNewRandomContact = () => {
     const contactsNotShown = ref(allContacts.filter(con => !contactsToShow.value.includes(con)));
     if (contactsNotShown.value.length > 0) {
@@ -42,7 +60,16 @@
     else {
       alert('No more contacts to show. All of them are already displayed')
     }
+  }
 
+  // Iteration 4: sort by name and popularity
+
+  const sortByName = () => {
+    contactsToShow.value = contactsByName.value
+  }
+
+  const sortByPopularity = () => {
+    contactsToShow.value = contactsByPopularity.value
   }
 
 </script>
