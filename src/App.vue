@@ -29,7 +29,7 @@ const sortedContacts = computed(() => {
 fetch('/src/contacts.json')
   .then(response => response.json())
   .then(data => {
-    contacts.value = data.slice(5, 10);
+    contacts.value = data.slice(0, 5);
   })
   .catch(error => {
     console.error('An error occurred while retrieving contacts:', error);
