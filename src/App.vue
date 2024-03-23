@@ -15,6 +15,7 @@
         <th>Popularity</th>
         <th>Won Oscar</th>
         <th>Won Emmy</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -23,7 +24,10 @@
         <td>{{ con.name }}</td>
         <td>{{ con.popularity }}</td>
         <td v-if="con.wonOscar === true">🏆</td>
-        <td v-if="con.wonEmmy === true">🏆</td>
+        <td v-else></td>
+        <td v-if="con.wonEmmy === true">⭐</td>
+        <td v-else></td>
+        <td><button @click="deleteContact(con.id)">Delete</button></td>
       </tr>
     </tbody>
   </table>
@@ -70,6 +74,11 @@
 
   const sortByPopularity = () => {
     contactsToShow.value = contactsByPopularity.value
+  }
+
+  // Iteration 5: Delete contact
+  const deleteContact = (idToDelete) => {
+    contactsToShow.value = contactsToShow.value.filter(con => con.id !== idToDelete)
   }
 
 </script>
