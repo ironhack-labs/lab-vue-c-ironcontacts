@@ -1,13 +1,13 @@
 <script setup>
 import { useContactsStore } from "@/stores/contactsStore";
-// import { storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
 
 const contactsStore = useContactsStore();
 
 // Destructuring to avoid having to call contactsStore.function every time
 
-const { addRandomContact, sortByPopularity, sortByName, deleteContact, displayContacts } = contactsStore
-// const { displayContacts } = storeToRefs(contactsStore);
+const { addRandomContact, deleteContact, sortContactsByPopularity, sortContactsByName } = contactsStore
+const { displayContacts } = storeToRefs(contactsStore);
 
 // Why don't I need storesToRefs for displayContacts?
 
@@ -17,9 +17,9 @@ const { addRandomContact, sortByPopularity, sortByName, deleteContact, displayCo
   <div id="app">
     <h1>IronContacts</h1>
     <div id="buttons">
-      <button class="button" @click="addRandomContact">Add contact</button>
-      <button class="button" @click="sortByPopularity">Sort by popularity</button>
-      <button class="button" @click="sortByName">Sort by name</button>
+      <button class="button" @click="addRandomContact()">Add contact</button>
+      <button class="button" @click="sortContactsByPopularity()">Sort by popularity</button>
+      <button class="button" @click="sortContactsByName()">Sort by name</button>
     </div>
     <table>
       <tr>

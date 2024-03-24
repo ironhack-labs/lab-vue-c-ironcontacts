@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import contacts from "@/contacts.json";
 
 export const useContactsStore = defineStore('contacts', () => {
@@ -9,24 +9,26 @@ export const useContactsStore = defineStore('contacts', () => {
     const originalContacts = ref(contacts)
     // puede que no haga falta crear "originalContacts" y se pueda llamar directamente contacts en las 2 variables de abajo?
     const displayContacts = ref(originalContacts.value.slice(0, 5))
-    const remainingContacts = ref(originalContacts.value.filter(contact => !displayContacts.value.some(fc => fc.id === contact.id)))
+    const sortByPopularity = computed(() => displayContacts.value.sort((a, b) => b.popularity - a.popularity));
+    const sortByName = computed(() => displayContacts.value.sort((a, b) => a.name.localeCompare(b.name)));
 
     // Actions
     function addRandomContact() {
-        if (remainingContacts.value.length > 0) {
-          const randomIndex = Math.floor(Math.random() * remainingContacts.value.length);
-          displayContacts.value.push(remainingContacts.value[randomIndex]);
+        const remainingContacts = originalContacts.value.filter(contact => !displayContacts.value.some(filteredContact => filteredContact.id === contact.id))
+        if (remainingContacts.length > 0) {
+          const randomIndex = Math.floor(Math.random() * remainingContacts.length);
+          displayContacts.value.push(remainingContacts[randomIndex]);
         //   console.log("New contact added:", displayContacts.value);
         }
     }
 
-    function sortByPopularity() {
-      displayContacts.value.sort((a, b) => b.popularity - a.popularity);
+    function sortContactsByPopularity() {
+      displayContacts.value = sortByPopularity.value
     //   console.log("Contacts sorted by popularity:", displayContacts.value);
     }
 
-    function sortByName() {
-      displayContacts.value.sort((a, b) => a.name.localeCompare(b.name));
+    function sortContactsByName() {
+      displayContacts.value = sortByName.value
     //   console.log("Contacts sorted by name:", displayContacts.value);
     }
 
@@ -38,5 +40,5 @@ export const useContactsStore = defineStore('contacts', () => {
       }
     }
 
-    return { displayContacts, addRandomContact, sortByPopularity, sortByName, deleteContact }
+    return { displayContacts, addRandomContact, sortContactsByPopularity, sortContactsByName, deleteContact }
 });
