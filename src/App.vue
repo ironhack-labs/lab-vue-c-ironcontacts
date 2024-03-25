@@ -1,17 +1,14 @@
 <script setup>
-import { useContactStore } from "./stores/contactStore.js";
-import { storeToRefs } from "pinia";
+import { useContactsStore } from "./stores/contactStore.js";
+import { ref, computed } from "vue";
 
-const {
-  firstFiveContacts,
-  addRandomContact,
-  sortedContactsPopularity,
-  sortedContactsName,
-  deleteContact,
-} = useContactStore();
+const contactStore = useContactsStore();
 
-//const {allContacts} storeToRefs (contactStore);
-
+const firstFiveContacts = computed(() => contactStore.allContacts);
+const addRandomContact = () => contactStore.addRandomContact();
+const sortedContactsPopularity = () => contactStore.sortByPopularity();
+const sortedContactsName = () => contactStore.sortByName();
+const deleteContact = (contactId) => contactStore.deleteContact(contactId);
 </script>
 
 <template>
@@ -39,7 +36,11 @@ const {
       </tr>
     </thead>
     <tbody id="contactList">
-      <tr v-for="contact in firstFiveContacts" :key="contact.id">
+      <tr
+        v-for="(contact, index) in firstFiveContacts"
+        :key="contact.id"
+        :class="{ 'gray-row': index % 2 === 0, 'white-row': index % 2 !== 0 }"
+      >
         <td>
           <img
             :src="contact.pictureUrl"
@@ -69,6 +70,14 @@ const {
 </template>
 
 <style scoped>
+.gray-row {
+  background-color: #f0f0f0; /* Gris */
+}
+
+.white-row {
+  background-color: #ffffff; /* Blanco */
+}
+
 h1 {
   padding-left: 25px;
   font-family: Arial, Helvetica, sans-serif;
@@ -82,7 +91,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
