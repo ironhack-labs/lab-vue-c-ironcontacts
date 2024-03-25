@@ -83,7 +83,9 @@ h1 {
   font-family: Arial, Helvetica, sans-serif;
 }
 .allBtn {
-  padding-left: 15px;
+  display: flex;
+
+  justify-content: start;
 }
 
 table {
@@ -103,7 +105,7 @@ th {
 }
 img {
   max-width: 100px;
-  max-height: 100px;
+  max-height: 100px;  
 }
 .header-button {
   display: inline-block;
