@@ -21,6 +21,16 @@ export default {
         console.log("Random contact: " + randomContact.name);
       }
     },
+    sortByName() {
+      this.contacts.sort((a, b) => a.name.localeCompare(b.name))
+    },
+    sortByPopularity() {
+      this.contacts.sort((a, b) => b.popularity - a.popularity)
+    },
+    removeContact(id) {
+      this.contacts = this.contacts.filter((contact) => contact.id !== id);
+      console.log(this.contacts.length);
+    }
   },
 }
 
@@ -30,6 +40,8 @@ export default {
 <template>
   <h1>Iron Contacts</h1>
   <button @click="addRandomContact">Add Random Contact</button>
+  <button @click="sortByName">Sort By Name</button>
+  <button @click="sortByPopularity">Sort By Popularity</button>
   <table>
     <thead>
       <tr>
@@ -49,6 +61,7 @@ export default {
         <td v-else></td>
         <td v-if="contact.wonEmmy">🏆</td>
         <td v-else></td>
+        <td @click="removeContact(contact.id)">❌​</td>
       </tr>
     </tbody>
   </table>
