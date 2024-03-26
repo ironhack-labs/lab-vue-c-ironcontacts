@@ -6,18 +6,21 @@ export default {
   name: 'App',
   data() {
     const contacts = ref([])
-    contacts.value = contactsData.slice(0, 10);
+    contacts.value = contactsData.slice(0, 5);
+    const remainingContacts = ref([])
+    remainingContacts.value = contactsData.filter((contact) => !contacts.value.includes(contact))
+
     return {
-      contacts
+      contacts, remainingContacts
     }
   },
   methods: {
     addRandomContact() {
-      const remainingContacts = contactsData.filter((contact) => !this.contacts.includes(contact));
-      if (remainingContacts.length > 0) {
-        const randomContact = remainingContacts[Math.floor(Math.random() * remainingContacts.length)];
+      this.remainingContacts = this.remainingContacts.filter((contact) => !this.contacts.includes(contact));
+      if (this.remainingContacts.length > 0) {
+        const randomContact = this.remainingContacts[Math.floor(Math.random() * this.remainingContacts.length)];
         this.contacts.push(randomContact);
-        console.log("Contacts remaining: " + remainingContacts.length);
+        console.log("Contacts remaining: " + this.remainingContacts.length);
         console.log("Random contact: " + randomContact.name);
       }
     },
