@@ -11,8 +11,8 @@ export const useContactsStore = defineStore("contacts", {
   // Getters
   getters: {
     // Reordenaciones, etc.
-    contactsOrderdById(state) {
-      return [...state.contacts].sort((a, b) => a.id - b.id);
+    firstFiveNames(state) {
+      return state.contacts.slice(0, 5)
     },
   },
   // Actions

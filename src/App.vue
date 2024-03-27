@@ -18,6 +18,7 @@ const loadContacts = async () => {
   }
 };
 
+// Ejecutar la función cuando el DOM esté disponible
 onMounted(loadContacts);
 </script>
 
@@ -25,13 +26,27 @@ onMounted(loadContacts);
   <div>
     <h1>Contactos</h1>
     <div v-if="error" class="error">{{ error }}</div>
-    <ul v-else>
-      <li v-for="contact in contacts" :key="contact.id">
-        {{ contact.name }} - {{ contact.popularity }}
-      </li>
-    </ul>
+    <table v-else>
+      <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Nombre</th>
+          <th>Popularidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="contact in contactsStore.firstFiveNames" :key="contact.id">
+          <td><img :src="contact.pictureUrl" :alt="contact.name" style="width: 70px; height: auto;"></td>
+          <td>{{ contact.name }}</td>
+          <td>{{ contact.popularity.toFixed(2) }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <style>
+body {
+  font-family: sans-serif;
+}
 </style>
