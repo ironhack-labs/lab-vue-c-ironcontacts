@@ -9,7 +9,6 @@ const displayedContacts = ref([]);
 const remainingContacts = ref([]);
 const error = ref(null);
 
-
 // RANDOM CONTACTS
 const addRandomContact = () => {
   if (remainingContacts.value.length > 0) {
@@ -36,6 +35,21 @@ const loadContacts = async () => {
   }
 };
 
+// SORTING FUNCTIONS
+const sortByPopularity = () => {
+  displayedContacts.value.sort((a, b) => b.popularity - a.popularity)
+}
+
+const sortByName = () => {
+  displayedContacts.value.sort((a, b) => a.name.localeCompare(b.name));
+};
+
+// DELETE CONTACT FUNCTION
+const deleteContact = (contactId) => {
+  displayedContacts.value = displayedContacts.value.filter(contact => contact.id !== contactId)
+}
+
+
 // Ejecutar la función cuando el DOM esté disponible
 onMounted(() => {
   if (contactsStore.contacts.length === 0) {
@@ -52,6 +66,8 @@ onMounted(() => {
   <div>
     <h1>Contactos</h1>
     <button @click="addRandomContact">Añadir Contacto Aleatorio</button>
+    <button @click="sortByPopularity">Sort by Popularity</button>
+    <button @click="sortByName">Sort by Name</button>
     <div v-if="error" class="error">{{ error }}</div>
     <table v-else>
       <thead>
@@ -61,6 +77,7 @@ onMounted(() => {
           <th>Popularidad</th>
           <th>Won Oscar</th>
           <th>Won Emy</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -70,6 +87,7 @@ onMounted(() => {
           <td>{{ contact.popularity.toFixed(2) }}</td>
           <td class="text-center">{{ contact.wonOscar ? '🏆' : '' }}</td>
           <td class="text-center">{{ contact.wonEmmy ? '🏆' : '' }}</td>
+          <td><button @click="deleteContact(contact.id)">Delete</button></td>
         </tr>
       </tbody>
     </table>
