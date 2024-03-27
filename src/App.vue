@@ -5,26 +5,53 @@ import { useContactsStore } from '@/stores/contactsStore';
 const contactsStore = useContactsStore()
 
 // Estados reactivos para contactos y error
-const contacts = ref([]);
+const displayedContacts = ref([]);
+const remainingContacts = ref([]);
 const error = ref(null);
+
+
+// RANDOM CONTACTS
+const addRandomContact = () => {
+  if (remainingContacts.value.length > 0) {
+    const randomIndex = Math.floor(Math.random() * remainingContacts.value.length);
+    const randomContact = remainingContacts.value.splice(randomIndex, 1)[0];
+    displayedContacts.value.push(randomContact);
+  } else {
+    alert('No hay más contactos para añadir.');
+  }
+};
+
+const initializeContacts = () => {
+  displayedContacts.value = [...contactsStore.firstFiveNames];
+  remainingContacts.value = [...contactsStore.contacts.slice(5)];
+};
 
 // Función para cargar los contactos
 const loadContacts = async () => {
   try {
     await contactsStore.loadContacts();
-    contacts.value = contactsStore.contacts;
+    initializeContacts();
   } catch (e) {
     error.value = e.message;
   }
 };
 
 // Ejecutar la función cuando el DOM esté disponible
-onMounted(loadContacts);
+onMounted(() => {
+  if (contactsStore.contacts.length === 0) {
+    loadContacts();
+  } else {
+    // Si contactsStore ya tiene contactos cargados (por ejemplo, en hot reload), inicializar directamente
+    initializeContacts();
+  }
+});
+
 </script>
 
 <template>
   <div>
     <h1>Contactos</h1>
+    <button @click="addRandomContact">Añadir Contacto Aleatorio</button>
     <div v-if="error" class="error">{{ error }}</div>
     <table v-else>
       <thead>
@@ -32,13 +59,17 @@ onMounted(loadContacts);
           <th>Foto</th>
           <th>Nombre</th>
           <th>Popularidad</th>
+          <th>Won Oscar</th>
+          <th>Won Emy</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="contact in contactsStore.firstFiveNames" :key="contact.id">
-          <td><img :src="contact.pictureUrl" :alt="contact.name" style="width: 70px; height: auto;"></td>
+        <tr v-for="contact in displayedContacts" :key="contact.id">
+          <td><img :src="contact.pictureUrl" :alt="contact.name" style="width: 60px; height: auto;"></td>
           <td>{{ contact.name }}</td>
           <td>{{ contact.popularity.toFixed(2) }}</td>
+          <td class="text-center">{{ contact.wonOscar ? '🏆' : '' }}</td>
+          <td class="text-center">{{ contact.wonEmmy ? '🏆' : '' }}</td>
         </tr>
       </tbody>
     </table>
@@ -48,5 +79,20 @@ onMounted(loadContacts);
 <style>
 body {
   font-family: sans-serif;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+thead {
+  background-color: #f2f2f2;
 }
 </style>
