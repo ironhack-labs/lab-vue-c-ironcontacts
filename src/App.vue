@@ -1,11 +1,13 @@
+<script setup>
+import IronContacts from './components/IronContacts.vue';
+
+</script>
+
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <IronContacts />
 </template>
 
-<script setup>
-import HelloWorld from './components/HelloWorld.vue';
-</script>
+
 
 <style>
 #app {
@@ -15,5 +17,8 @@ import HelloWorld from './components/HelloWorld.vue';
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: #BF9851
 }
+
+
 </style>
